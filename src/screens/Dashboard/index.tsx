@@ -31,6 +31,7 @@ import {
 
 export interface DataListProps extends TransactionCardProps {
   id: string;
+  name: string;
 }
 
 interface HighlightProps {
@@ -63,7 +64,7 @@ export function Dashboard() {
     return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString("pt-BR", {month: "long"})}`;
   }
 
-  async function loadTrasnactions() {
+  async function loadTransactions() {
     const dataKey = "@gofinances:transactions";
     const response = await AsyncStorage.getItem(dataKey);
 
@@ -138,12 +139,12 @@ export function Dashboard() {
   }
 
   useEffect(() => {
-    loadTrasnactions();
+    loadTransactions();
   }, []);
 
   useFocusEffect(
     useCallback(() => {
-      loadTrasnactions();
+      loadTransactions();
     }, [])
   );
 
