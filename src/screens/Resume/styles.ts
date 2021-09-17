@@ -1,7 +1,7 @@
-import styled from "styled-components/native";
-import { RFValue } from "react-native-responsive-fontsize";
-import { BorderlessButton } from "react-native-gesture-handler";
-import { Feather } from "@expo/vector-icons";
+import styled from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { BorderlessButton } from 'react-native-gesture-handler';
+import { Feather } from '@expo/vector-icons';
 
 export const Container = styled.View`
   flex: 1;
@@ -26,6 +26,11 @@ export const Title = styled.Text`
 `;
 
 export const Content = styled.ScrollView``;
+
+export const ChartContainer = styled.View`
+  width: 100%;
+  align-items: center;
+`;
 
 export const MonthSelect = styled.View`
   width: 100%;

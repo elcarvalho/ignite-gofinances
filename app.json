@@ -6,7 +6,9 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "description": "",
+    "githubUrl": "https://github.com/elcarvalho/ignite-gofinances"
   },
   "name": "gofinances"
 }
