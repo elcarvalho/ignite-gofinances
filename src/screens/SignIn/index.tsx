@@ -21,14 +21,23 @@ import { useAuth } from "../../hooks/auth";
 import { SignInSocialButton } from "../../components/SignInSocialButton";
 
 export function SignIn() {
-  const { singInWithGoogle } = useAuth();
+  const { user, singInWithGoogle, signInWithApple } = useAuth();
 
   async function hanldeSingInWithGoogle() {
     try {
       await singInWithGoogle();
     } catch (error) {
       console.log(error);
-      Alert.alert("Não foi possivel conectar a conta do Google");
+      Alert.alert("Não foi possivel conectar a conta Google");
+    }
+  }
+
+  async function hanldeSingInWithApple() {
+    try {
+      await signInWithApple();
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Não foi possivel conectar a conta Apple");
     }
   }
 
@@ -55,7 +64,11 @@ export function SignIn() {
             svg={GoogleSvg}
             onPress={hanldeSingInWithGoogle}
           />
-          <SignInSocialButton title="Entrar com Apple" svg={AppleSvg} />
+          <SignInSocialButton
+            title="Entrar com Apple"
+            svg={AppleSvg}
+            onPress={hanldeSingInWithApple}
+          />
         </FooterWrapper>
       </Footer>
     </Container>
