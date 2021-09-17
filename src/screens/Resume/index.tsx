@@ -1,14 +1,15 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useFocusEffect } from "@react-navigation/native";
-import { ActivityIndicator } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { VictoryPie } from "victory-native";
-import { RFValue } from "react-native-responsive-fontsize";
-import { addMonths, subMonths, format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import React, { useEffect, useState, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { VictoryPie } from 'victory-native';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { addMonths, subMonths, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { useTheme } from "styled-components";
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { useTheme } from 'styled-components';
+import { useAuth } from '../../hooks/auth';
 
 import {
   Container,
@@ -20,14 +21,14 @@ import {
   MonthSelectIcon,
   Month,
   LoadContainer,
-} from "./styles";
+} from './styles';
 
-import { HistoryCard } from "../../components/HistoryCard";
+import { HistoryCard } from '../../components/HistoryCard';
 
-import { categories } from "../../utils/categories";
+import { categories } from '../../utils/categories';
 
 interface TransactionData {
-  type: "positive" | "negative";
+  type: 'positive' | 'negative';
   name: string;
   amount: string;
   category: string;
@@ -49,9 +50,10 @@ export function Resume() {
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>();
 
   const theme = useTheme();
+  const { user } = useAuth();
 
-  function handleDateChange(action: "next" | "prev") {
-    if (action === "next") {
+  function handleDateChange(action: 'next' | 'prev') {
+    if (action === 'next') {
       setSelectedDate(addMonths(selectedDate, 1));
     } else {
       setSelectedDate(subMonths(selectedDate, 1));
@@ -60,13 +62,13 @@ export function Resume() {
 
   async function loadData() {
     setIsLoading(true);
-    const dataKey = "@gofinances:transactions";
+    const dataKey = `@gofinances:transactions_user:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const responseFormatted = response ? JSON.parse(response) : [];
 
     const expensives = responseFormatted.filter(
       (expensive: TransactionData) =>
-        expensive.type === "negative" &&
+        expensive.type === 'negative' &&
         new Date(expensive.date).getMonth() === selectedDate.getMonth() &&
         new Date(expensive.date).getFullYear() === selectedDate.getFullYear()
     );
@@ -90,9 +92,9 @@ export function Resume() {
       });
 
       if (categorySum > 0) {
-        const totalFormatted = categorySum.toLocaleString("pt-BR", {
-          style: "currency",
-          currency: "BRL",
+        const totalFormatted = categorySum.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
         });
 
         const percent = `${((categorySum / expensivesTotal) * 100).toFixed(
@@ -132,15 +134,15 @@ export function Resume() {
       ) : (
         <>
           <MonthSelect>
-            <MonthSelectButton onPress={() => handleDateChange("prev")}>
+            <MonthSelectButton onPress={() => handleDateChange('prev')}>
               <MonthSelectIcon name="chevron-left" />
             </MonthSelectButton>
 
             <Month>
-              {format(selectedDate, "MMMM, yyyy", { locale: ptBR })}
+              {format(selectedDate, 'MMMM, yyyy', { locale: ptBR })}
             </Month>
 
-            <MonthSelectButton onPress={() => handleDateChange("next")}>
+            <MonthSelectButton onPress={() => handleDateChange('next')}>
               <MonthSelectIcon name="chevron-right" />
             </MonthSelectButton>
           </MonthSelect>
@@ -151,7 +153,7 @@ export function Resume() {
             style={{
               labels: {
                 fontSize: RFValue(18),
-                fontWeight: "bold",
+                fontWeight: 'bold',
                 fill: theme.colors.shape,
               },
             }}
